@@ -15,11 +15,10 @@ class SplashPage extends StatelessWidget {
   void trySignIn(BuildContext context) async {
     AccessToken token = await AccessTokenStore.instance.fromStore();
     if (token.refreshToken == null) {
-      //Navigator.of(context).pushReplacementNamed('/sign_select');
-      Navigator.of(context).pushReplacementNamed('/main');
+      Navigator.of(context).pushReplacementNamed('/sign_select');
     } else {
       print("Access Token: " + token.accessToken);
-      Navigator.of(context).pushReplacementNamed('/sign_select');
+      Navigator.of(context).pushReplacementNamed('/main');
     }
   }
 

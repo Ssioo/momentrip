@@ -1,7 +1,8 @@
-import 'package:momentrip/src/main/models/MainResponse.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:momentrip/src/common/models/DefaultResponse.dart';
 
 abstract class MainView {
 
-  void validateSuccess(MainResponse mainResponse);
-  void validateFailure();
+  void validateSuccess(BuildContext buildContext, DefaultResponse defaultResponse);
+  void validateFailure(BuildContext buildContext);
 }

@@ -1,12 +1,12 @@
 
-class MainResponse {
+class DefaultResponse {
   bool isSuccess;
   int code;
   String message;
 
-  MainResponse({this.isSuccess, this.code, this.message});
+  DefaultResponse({this.isSuccess, this.code, this.message});
 
-  MainResponse.fromJson(Map<String, dynamic> json) :
+  DefaultResponse.fromJson(Map<String, dynamic> json) :
         isSuccess = json['isSuccess'],
         code = json['code'],
         message = json['message'];

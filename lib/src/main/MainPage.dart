@@ -1,10 +1,13 @@
+import 'dart:math';
+
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/services.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import 'MainService.dart';
 import 'interfaces/MainView.dart';
 import 'package:flutter/material.dart';
-import 'models/MainResponse.dart';
+import '../common/models/DefaultResponse.dart';
 import 'widgets/page2/Page2.dart';
 import 'widgets/page1/Page1.dart';
 import 'widgets/page3/Page3.dart';
@@ -53,60 +56,68 @@ class _MainPageState extends State<MainPage> implements MainView{
     );
     return Scaffold(
       body: SafeArea(
-        child: callPage(_selectedPageIdx)
+        child: callPage(_selectedPageIdx),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_array),
-            title: Text('Home')
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box),
-            title: Text('Add'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            title: Text('MyPage')
-          ),
-        ],
-        backgroundColor: Colors.black,
-        currentIndex: _selectedPageIdx,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        selectedItemColor: Colors.redAccent,
-        unselectedItemColor: Colors.blueGrey,
-        iconSize: 32,
-        onTap: (idx){
-          setState(() {
-            if (idx == 1) {
-              //selectDate();
-              Navigator.pushNamed(context, "/travel");
-            } else {
-              _selectedPageIdx = idx;
-            }
-          });
+      bottomNavigationBar: Builder(
+        builder: (context) {
+          return BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.view_array),
+                  title: Text('Home')
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_box),
+                title: Text('Add'),
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline),
+                  title: Text('MyPage')
+              ),
+            ],
+            backgroundColor: Colors.black,
+            currentIndex: _selectedPageIdx,
+            showUnselectedLabels: false,
+            showSelectedLabels: false,
+            selectedItemColor: Colors.redAccent,
+            unselectedItemColor: Colors.blueGrey,
+            iconSize: 32,
+            onTap: (idx){
+              setState(() {
+                if (idx == 1) {
+                  selectDate(context);
+                } else {
+                  _selectedPageIdx = idx;
+                }
+              });
+            },
+          );
         },
       ),
     );
   }
 
-  @override
-  void validateFailure() {
-
+  ProgressDialog dialog;
+  showProgressDialog(BuildContext context) async {
+    if (dialog == null) {
+      dialog = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: true);
+    }
+    await dialog.show();
+  }
+  hideProgressDialog(BuildContext context) async {
+    if (dialog != null && dialog.isShowing()) {
+      dialog.hide();
+    }
   }
 
-  @override
-  void validateSuccess(MainResponse mainResponse) {
 
-  }
-
-  void tryPostTravel() {
+  void tryPostTravel(BuildContext context, String startTime, String endTime) {
+    showProgressDialog(context);
     final MainService mMainService = MainService(this);
-    mMainService.getTest();
+    mMainService.postTrip(context, startTime, endTime);
   }
 
-  Future<List<DateTime>> selectDate() async {
+  void selectDate(BuildContext context) async {
     List<DateTime> pickedDates = await DateRangePicker.showDatePicker(
         context: context,
         initialFirstDate: DateTime.now(),
@@ -114,9 +125,52 @@ class _MainPageState extends State<MainPage> implements MainView{
         firstDate: DateTime(1950),
         lastDate: DateTime(2100));
     if (pickedDates != null && pickedDates.length == 2) {
-      return pickedDates;
-    } else {
-      return null;
+      tryPostTravel(context, pickedDates.elementAt(0).toIso8601String(), pickedDates.elementAt(1).toIso8601String());
     }
+  }
+
+  @override
+  void validateFailure(BuildContext buildContext) {
+    hideProgressDialog(buildContext);
+    Scaffold.of(buildContext).showSnackBar(SnackBar(
+      content: Text(
+        "새로운 여행 생성에 실패하였습니다.",
+        style: TextStyle(
+            fontFamily: "NotoSansKR",
+            fontWeight: FontWeight.w300,
+            color: Color.fromARGB(255, 248, 248, 2)),
+      ),
+      action: SnackBarAction(
+        label: "닫기",
+        onPressed: () {
+          Scaffold.of(buildContext).hideCurrentSnackBar();
+        },
+      ),
+    ));
+  }
+
+  @override
+  void validateSuccess(BuildContext buildContext, DefaultResponse defaultResponse) {
+    hideProgressDialog(buildContext);
+    Scaffold.of(buildContext).showSnackBar(SnackBar(
+      content: Text(
+        "새로운 여행을 생성하였습니다.",
+        style: TextStyle(
+            fontFamily: "NotoSansKR",
+            fontWeight: FontWeight.w300,
+            color: Color.fromARGB(255, 248, 248, 2)),
+      ),
+      action: SnackBarAction(
+        label: "닫기",
+        onPressed: () {
+          Scaffold.of(buildContext).hideCurrentSnackBar();
+        },
+      ),
+    ));
+    Future.delayed(Duration(milliseconds: 500), () {
+      Scaffold.of(buildContext).hideCurrentSnackBar();
+      Navigator.pushNamed(context, "/travel");
+    });
+
   }
 }

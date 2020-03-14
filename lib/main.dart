@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:momentrip/src/travel/TravelPage.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config/XAccessTokenInterceptor.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   // 테스트 서버 주소
-  static final String BASE_URL = "http://template.sio.com"; // TEST SERVER
+  static final String BASE_URL = "http://15.164.90.221:3333/"; // TEST SERVER
   // 실서버 주소
 //  static final String BASE_URL = "https://template.sio.com"; // PRODUCTION SERVER
 
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
       dio = Dio(options);
 
       dio.interceptors.add(XAccessTokenInterceptor());
+      dio.interceptors.add(LogInterceptor(responseBody: true));
     }
     return dio;
   }

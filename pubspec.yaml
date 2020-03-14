@@ -64,6 +64,14 @@ dependencies:
   # https://pub.dev/packages/mapbox_gl#-installing-tab-
   mapbox_gl: ^0.0.5
 
+  # https://sysocoder.com/flutter-%EC%9C%84%EC%B9%98%EC%84%9C%EB%B9%84%EC%8A%A4location-service/
+  provider: ^4.0.1
+  location: ^2.5.0
+  permission_handler: ^4.4.0+hotfix.1
+
+  # https://pub.dev/packages/progress_dialog
+  progress_dialog: ^1.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,13 +88,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-  plugin:
-    platforms:
-      android:
-        package: com.mapbox.mapboxgl
-        pluginClass: MapboxMapsPlugin
-      ios:
-        pluginClass: MapboxMapsPlugin
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

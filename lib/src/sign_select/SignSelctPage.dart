@@ -51,7 +51,7 @@ class SignSelectPage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 30, right: 30, top: 12),
                   child: MaterialButton(
                     child: Text(
-                      "카카오톡으로 가입하기",
+                      "카카오톡으로 로그인하기",
                       style: TextStyle(
                           color: Color.fromARGB(255, 24, 23, 23),
                           fontSize: 14,
