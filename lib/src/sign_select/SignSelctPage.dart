@@ -12,7 +12,20 @@ class SignSelectPage extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Image.asset("images/img_travelcard.png", fit: BoxFit.cover,),
+            child: Image.asset("images/img_back_signselect.png", fit: BoxFit.cover,),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color.fromRGBO(24, 23, 23, 0), Color.fromRGBO(24, 23, 23, 1)]
+                )
+              ),
+            )
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,

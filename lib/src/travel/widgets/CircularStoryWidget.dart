@@ -37,13 +37,16 @@ class CircularStroyWidget extends StatelessWidget {
             ),
           ),
         ),
-        Text(
-          "DAY " + day.toString(),
-          style: TextStyle(
-            color: Color.fromARGB(255, 142, 142, 142),
-            fontFamily: "NotoSansKR",
-            fontWeight: FontWeight.w300,
-            fontSize: 12,
+        Padding(
+          padding: EdgeInsets.only(top: 3),
+          child: Text(
+            day.toString() + " DAY",
+            style: TextStyle(
+              color: Color.fromARGB(255, 142, 142, 142),
+              fontFamily: "NotoSansKR",
+              fontWeight: FontWeight.w300,
+              fontSize: 12,
+            ),
           ),
         )
       ],

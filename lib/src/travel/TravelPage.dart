@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:momentrip/src/travel/widgets/CircularStoryWidget.dart';
@@ -18,6 +20,7 @@ class TravelPageState extends State<TravelPage> {
   @override
   void initState() {
     super.initState();
+
   }
 
   Future<bool> requestLocationPermisson() async {
@@ -53,7 +56,7 @@ class TravelPageState extends State<TravelPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.more_horiz),
@@ -66,41 +69,54 @@ class TravelPageState extends State<TravelPage> {
             },
           )
         ],
-        actionsIconTheme:
-            IconThemeData(color: Color.fromARGB(255, 255, 255, 255), size: 24),
+        backgroundColor: Color.fromRGBO(24, 23, 23, 0),
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255), size: 24),
       ),
-      body: SafeArea(
-        child: Builder(
-          builder: (context) {
-            return Stack(
-              children: <Widget>[
-                MapboxMap(
-                  initialCameraPosition:
-                  CameraPosition(
-                      target: LatLng(37.555033, 126.970904),
-                      zoom: 13),
-                  onMapCreated: (controller) {
-                    mapController = controller;
-                    requestLocationPermisson().then((ok) {
-                      if (ok) {
-                        getLocations().then((locationData) {
-                          mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(locationData.latitude, locationData.longitude), 14));
-                        });
-                      }
-                    });
-                  },
-                  styleString: MapboxStyles.DARK,
-                  myLocationEnabled: true,
-                  myLocationTrackingMode: MyLocationTrackingMode.None,
-                  trackCameraPosition: true,
-                  compassEnabled: true,
-                  myLocationRenderMode: MyLocationRenderMode.GPS,
+      body: Builder(
+        builder: (context) {
+          return Stack(
+            children: <Widget>[
+              MapboxMap(
+                initialCameraPosition:
+                CameraPosition(
+                    target: LatLng(37.555033, 126.970904),
+                    zoom: 13),
+                onMapCreated: (controller) {
+                  mapController = controller;
+                  requestLocationPermisson().then((ok) {
+                    if (ok) {
+                      getLocations().then((locationData) {
+                        mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(locationData.latitude, locationData.longitude), 14));
+                      });
+                    }
+                  });
+                },
+                styleString: MapboxStyles.DARK,
+                myLocationEnabled: true,
+                myLocationTrackingMode: MyLocationTrackingMode.None,
+                trackCameraPosition: true,
+                compassEnabled: true,
+                myLocationRenderMode: MyLocationRenderMode.GPS,
+              ),
+              SizedBox(
+                height: 200,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color.fromRGBO(24, 23, 23, 1), Color.fromRGBO(24, 23, 23, 0.7), Color.fromRGBO(24, 23, 23, 0)],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 100),
+                child: SizedBox(
+                  height: 100,
                   child: ListView.builder(
                     itemCount: 8,
-                    padding: EdgeInsets.only(left: 20, right: 20),
+                    padding: EdgeInsets.only(left: 20, right: 20, top: 16),
                     itemBuilder: (context, index) {
                       return CircularStroyWidget(
                           day: index + 1,
@@ -109,26 +125,26 @@ class TravelPageState extends State<TravelPage> {
                     scrollDirection: Axis.horizontal,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 31),
-                    child: FloatingActionButton(
-                      backgroundColor: Colors.white,
-                      onPressed: () {
-
-                      },
-                      child: Icon(
-                        Icons.add,
-                        color: Color.fromARGB(255, 84, 84, 84),
-                      ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 31),
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.white,
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/camera");
+                    },
+                    child: Icon(
+                      Icons.add,
+                      color: Color.fromARGB(255, 84, 84, 84),
                     ),
                   ),
-                )
-              ],
-            );
-          },
-        ),
+                ),
+              )
+            ],
+          );
+        },
       )
     );
   }

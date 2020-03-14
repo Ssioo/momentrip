@@ -72,6 +72,12 @@ dependencies:
   # https://pub.dev/packages/progress_dialog
   progress_dialog: ^1.2.1
 
+  # https://alligator.io/flutter/flutter-gradient/
+  gradient_app_bar: ^0.0.1
+
+  # https://pub.dev/packages/camera#-installing-tab-
+  camera: ^0.5.7+4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

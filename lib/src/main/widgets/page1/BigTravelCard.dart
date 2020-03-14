@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class BigTravelCardState extends State<BigTravelCard> {
     return SlidingCard(
       name: "SPAIN",
       date: "19.03.28~19.04.16",
-      imageUrl: "images/img_main_travelcard1.png",
+      imageUrl: "https://firebasestorage.googleapis.com/v0/b/momentrip-32cf2.appspot.com/o/home_02.png?alt=media&token=27716801-9eb0-49e1-9c47-477faf9400b0",
       city: "바르셀로나 세비야 톨레드 마드리드",
     );
   }
@@ -38,8 +39,10 @@ class SlidingCard extends StatelessWidget {
         fit: StackFit.expand,
         alignment: Alignment.bottomCenter,
         children: <Widget>[
-          Image.asset(
-            imageUrl,
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
             fit: BoxFit.cover,
           ),
           Padding(

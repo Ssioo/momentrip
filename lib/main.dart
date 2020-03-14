@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:momentrip/src/camera/CameraPage.dart';
 import 'package:momentrip/src/travel/TravelPage.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +32,11 @@ class MyApp extends StatelessWidget {
 
   // SharedPreferences 키 값
   static final String X_ACCESS_TOKEN = "X-ACCESS-TOKEN";
+
+  // Login Type
+  static final String LOGIN_TYPE = "LOGIN-TYPE";
+  static final String LOGIN_TYPE_KAKAO = "kakao";
+  static final String LOGIN_TYPE_NORMAL = "normal";
 
   static Dio getDio() {
     if (dio == null) {
@@ -81,6 +87,7 @@ class MyApp extends StatelessWidget {
         '/sign_select': (context) => SignSelectPage(),
         '/sign_up' : (context) => SignUpPage(),
         '/sign_in' : (context) => SignInPage(),
+        '/camera' : (context) => CameraPage(),
       },
     );
   }

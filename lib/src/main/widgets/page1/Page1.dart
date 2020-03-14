@@ -16,10 +16,8 @@ class Page1State extends State<Page1> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    pageController =
-        PageController(initialPage: curPageIdx, viewportFraction: 0.8);
+    pageController = PageController(initialPage: curPageIdx, viewportFraction: 0.8);
   }
 
   @override
