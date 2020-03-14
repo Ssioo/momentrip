@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "376806552313",
+    "firebase_url": "https://momentrip-32cf2.firebaseio.com",
+    "project_id": "momentrip-32cf2",
+    "storage_bucket": "momentrip-32cf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376806552313:android:4f1721151cdf6c803ba828",
+        "android_client_info": {
+          "package_name": "com.whoissio.momentrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376806552313-jsv2mlgmi8lc2gqqv82m79ia5r74nnue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whoissio.momentrip",
+            "certificate_hash": "953dbd8ffa938f06b4ef6214a1f838dcb280e739"
+          }
+        },
+        {
+          "client_id": "376806552313-dmunqknugge83otpeveuefdm8tnipumi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYxjBGUSWkoYn8WLVBfuqQUI-3xacjNGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376806552313-dmunqknugge83otpeveuefdm8tnipumi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
