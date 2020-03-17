@@ -1,0 +1,55 @@
+class MainResponse {
+  bool isSuccess;
+  int code;
+  String message;
+  List<MainResult> mainResult;
+
+  MainResponse.fromJson(Map<String, dynamic> json)
+      : isSuccess = json['isSuccess'],
+        code = json['code'],
+        message = json['message'],
+        mainResult = (json['result'] as List)
+            .map((e) => MainResult.fromJson(e))
+            .toList();
+
+  Map<String, dynamic> toJson() => {
+        'isSuccess': isSuccess,
+        'code': code,
+        'message': message,
+        'result': mainResult
+      };
+}
+
+class MainResult {
+  int tripIdx;
+  String createdAt;
+  String endedAt;
+
+  MainResult.fromJson(Map<String, dynamic> json)
+      : tripIdx = json['tripIdx'],
+        createdAt = json['createdAt'],
+        endedAt = json['endedAt'];
+
+  Map<String, dynamic> toJson() =>
+      {'tripIdx': tripIdx, 'createdAt': createdAt, 'endedAt': endedAt};
+}
+
+class MainObjectResponse {
+  bool isSuccess;
+  int code;
+  String message;
+  MainResult mainResult;
+
+  MainObjectResponse.fromJson(Map<String, dynamic> json)
+      : isSuccess = json['isSuccess'],
+        code = json['code'],
+        message = json['message'],
+        mainResult = MainResult.fromJson(json['result']);
+
+  Map<String, dynamic> toJson() => {
+        'isSuccess': isSuccess,
+        'code': code,
+        'message': message,
+        'result': mainResult
+      };
+}

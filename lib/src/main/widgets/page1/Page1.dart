@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:momentrip/src/main/widgets/page1/models/Page1Response.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../../main.dart';
 import 'BigTravelCard.dart';
 
 class Page1 extends StatefulWidget {
@@ -9,15 +13,18 @@ class Page1 extends StatefulWidget {
 }
 
 class Page1State extends State<Page1> {
-  int totalPage = 5;
   int curPageIdx = 0;
   double page = 2.0;
+  String defaultCardImg = "https://firebasestorage.googleapis.com/v0/b/momentrip-32cf2.appspot.com/o/home_01.png?alt=media&token=94836d9e-b84d-442f-b718-421562c1964d";
   PageController pageController;
+
+  List<Page1Result> tripResults;
 
   @override
   void initState() {
     super.initState();
     pageController = PageController(initialPage: curPageIdx, viewportFraction: 0.8);
+    tryGetTrips();
   }
 
   @override
@@ -35,17 +42,21 @@ class Page1State extends State<Page1> {
                     style: TextStyle(
                         color: Color.fromARGB(255, 150, 150, 150),
                         fontSize: 28,
-                        fontFamily: 'NotoSansKR',
-                        fontWeight: FontWeight.w500),
+                        fontFamily: 'Kenyan',),
                   ),
                 ),
-                Text(
-                  '최근순',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 150, 150, 150),
-                      fontSize: 12,
-                      fontFamily: 'NotoSansKR',
-                      fontWeight: FontWeight.w300),
+                MaterialButton(
+                  onPressed: () {
+
+                  },
+                  child: Text(
+                    '최근순',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 150, 150, 150),
+                        fontSize: 12,
+                        fontFamily: 'NotoSansKR',
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
               ]),
             ),
@@ -69,9 +80,14 @@ class Page1State extends State<Page1> {
                     scrollDirection: Axis.horizontal,
                     pageSnapping: true,
                     physics: BouncingScrollPhysics(),
-                    itemCount: totalPage,
+                    itemCount: tripResults == null || tripResults.length == 0 ? 1 : tripResults.length,
                     itemBuilder: (context, index) {
-                      return BigTravelCard();
+                      return BigTravelCard(
+                        name: tripResults == null || tripResults.length == 0 ? "GO ABROAD!" : tripResults.elementAt(index).title,
+                        imageUrl: tripResults == null || tripResults.length == 0 ? defaultCardImg : tripResults.elementAt(index).tripImgUrl,
+                        city: tripResults == null || tripResults.length == 0 ? "TO THE NEW WORLD" : tripResults.elementAt(index).city,
+                        date: tripResults == null || tripResults.length == 0 ? "RIGHT NOW" : tripResults.elementAt(index).date,
+                      );
                     }),
               ),
             ),
@@ -80,12 +96,11 @@ class Page1State extends State<Page1> {
                   EdgeInsets.only(top: 35, bottom: 35, left: 20, right: 20),
               child: SmoothPageIndicator(
                 controller: pageController,
-                count: totalPage,
+                count: tripResults == null || tripResults.length == 0 ? 1 : tripResults.length,
                 effect: SlideEffect(
                     spacing: 0.0,
                     radius: 0.0,
-                    dotWidth: (MediaQuery.of(context).size.width - 40) /
-                        totalPage.toDouble(),
+                    dotWidth: (MediaQuery.of(context).size.width - 40) / (tripResults == null || tripResults.length == 0 ? 1 : tripResults.length.toDouble()),
                     dotHeight: 2.0,
                     paintStyle: PaintingStyle.fill,
                     dotColor: Color.fromARGB(255, 64, 64, 63),
@@ -94,5 +109,16 @@ class Page1State extends State<Page1> {
             )
           ],
         ));
+  }
+
+  void tryGetTrips() async {
+    Response response = await MyApp.getDio().get("/trip");
+    Page1Response page1response = Page1Response.fromJson(response.data);
+    if (page1response == null) {
+      return;
+    }
+    setState(() {
+      tripResults = page1response.result;
+    });
   }
 }

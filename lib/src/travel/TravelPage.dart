@@ -1,11 +1,9 @@
-import 'package:camera/camera.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart' as Geo;
 import 'package:mapbox_gl/mapbox_gl.dart';
 import 'package:momentrip/src/travel/widgets/CircularStoryWidget.dart';
-import 'package:permission_handler/permission_handler.dart' as PermissionHandler;
 
 class TravelPage extends StatefulWidget {
   @override
@@ -14,34 +12,23 @@ class TravelPage extends StatefulWidget {
 
 class TravelPageState extends State<TravelPage> {
   MapboxMapController mapController;
-
-  Location location = Location();
+  int tripIdx;
+  Geo.Position position;
 
   @override
   void initState() {
     super.initState();
-
+    Future.delayed(Duration.zero, () {
+      tripIdx = ModalRoute.of(context).settings.arguments;
+    });
   }
 
-  Future<bool> requestLocationPermisson() async {
-    PermissionHandler.PermissionHandler permissionHandler = PermissionHandler.PermissionHandler();
-    var checked = await permissionHandler.checkPermissionStatus(PermissionHandler.PermissionGroup.locationAlways);
-    if (checked != PermissionHandler.PermissionStatus.granted) {
-      var permitted = await permissionHandler.requestPermissions([PermissionHandler.PermissionGroup.locationAlways]);
-      if (permitted[PermissionHandler.PermissionGroup.locationAlways] == PermissionHandler.PermissionStatus.granted) {
-        return true;
-      }
-    }
-    return true;
-  }
-
-  Future<LocationData> getLocations() async {
-    try {
-      var userLocation = await location.getLocation();
-      return userLocation;
-    } on Exception catch (e) {
+  Future<Geo.Position> getPosition() async {
+    Geo.GeolocationStatus geolocationStatus = await Geo.Geolocator().checkGeolocationPermissionStatus();
+    if (geolocationStatus != Geo.GeolocationStatus.granted) {
       return null;
     }
+    return await Geo.Geolocator().getCurrentPosition(desiredAccuracy: Geo.LocationAccuracy.medium);
   }
 
 
@@ -60,7 +47,9 @@ class TravelPageState extends State<TravelPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.more_horiz),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, "/settings");
+            },
           ),
           IconButton(
             icon: Icon(Icons.close),
@@ -81,15 +70,10 @@ class TravelPageState extends State<TravelPage> {
                 CameraPosition(
                     target: LatLng(37.555033, 126.970904),
                     zoom: 13),
-                onMapCreated: (controller) {
+                onMapCreated: (controller) async {
                   mapController = controller;
-                  requestLocationPermisson().then((ok) {
-                    if (ok) {
-                      getLocations().then((locationData) {
-                        mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(locationData.latitude, locationData.longitude), 14));
-                      });
-                    }
-                  });
+                  position = await getPosition();
+                  mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(position.latitude, position.longitude), 14));
                 },
                 styleString: MapboxStyles.DARK,
                 myLocationEnabled: true,
@@ -132,8 +116,12 @@ class TravelPageState extends State<TravelPage> {
                   padding: const EdgeInsets.only(bottom: 31),
                   child: FloatingActionButton(
                     backgroundColor: Colors.white,
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/camera");
+                    onPressed: () async {
+                      //ImagePicker.pickVideo(source: ImageSource.camera);
+                      int result = await Navigator.pushNamed(context, "/camera", arguments: TravelArgument(tripIdx: tripIdx, position: position));
+                      if (result == 0) {
+                        // 여행 상세 다시 받기.
+                      }
                     },
                     child: Icon(
                       Icons.add,
@@ -149,11 +137,11 @@ class TravelPageState extends State<TravelPage> {
     );
   }
 
-  void getTripDetails() async {
+}
 
-  }
+class TravelArgument {
+  int tripIdx;
+  Geo.Position position;
 
-  Future<Widget> buildCircleCard(BuildContext buildContext) async {
-
-  }
+  TravelArgument({this.tripIdx, this.position});
 }

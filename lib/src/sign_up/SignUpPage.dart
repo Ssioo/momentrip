@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:momentrip/main.dart';
 import 'package:momentrip/src/common/models/DefaultResponse.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 

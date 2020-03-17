@@ -1,14 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:momentrip/src/camera/CameraPage.dart';
+import 'package:momentrip/src/camera_result/CameraResultPage.dart';
 import 'package:momentrip/src/travel/TravelPage.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config/XAccessTokenInterceptor.dart';
 import 'src/main/MainPage.dart';
+import 'src/settings/SettingsPage.dart';
 import 'src/sign_in/SignInPage.dart';
 import 'src/sign_select/SignSelctPage.dart';
 import 'src/sign_up/SignUpPage.dart';
@@ -57,6 +59,9 @@ class MyApp extends StatelessWidget {
     if (sSharedPreferences == null) {
       sSharedPreferences = await SharedPreferences.getInstance();
     }
+
+    Crashlytics.instance.enableInDevMode = true;
+    FlutterError.onError = Crashlytics.instance.recordFlutterError;
   }
 
   @override
@@ -88,6 +93,8 @@ class MyApp extends StatelessWidget {
         '/sign_up' : (context) => SignUpPage(),
         '/sign_in' : (context) => SignInPage(),
         '/camera' : (context) => CameraPage(),
+        '/settings': (context) => SettingsPage(),
+        '/camera/result' : (context) => CameraResultPage(),
       },
     );
   }

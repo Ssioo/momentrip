@@ -1,4 +1,3 @@
-import 'package:momentrip/src/common/models/DefaultResponse.dart';
 
 class SignInResponse {
   bool isSuccess;

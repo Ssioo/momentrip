@@ -28,8 +28,9 @@ dependencies:
 
   json_annotation: ^3.0.0
   shared_preferences: ^0.5.6+3
-  image_picker: ^0.6.3+1
+  image_picker: ^0.6.3+4
   path_provider: ^1.6.0
+  path:
   sqflite: ^1.1.6
 
   # https://firebaseopensource.com/projects/firebaseextended/flutterfire/
@@ -77,6 +78,23 @@ dependencies:
 
   # https://pub.dev/packages/camera#-installing-tab-
   camera: ^0.5.7+4
+  video_player: ^0.10.8+1
+  thumbnails:
+    git:
+      url: https://github.com/divyanshub024/Flutter_Thumbnails.git
+  esys_flutter_share:
+
+  # https://pub.dev/packages/clippy_flutter#-installing-tab-
+  clippy_flutter: ^1.1.1
+
+  # https://pub.dev/packages/flutter_staggered_grid_view#-installing-tab-
+  flutter_staggered_grid_view: "^0.3.0"
+
+  # https://pub.dev/packages/video_thumbnail#-installing-tab-
+  video_thumbnail: ^0.2.0
+
+  # https://pub.dev/packages/geolocator
+  geolocator: ^5.3.0
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +120,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+    - videos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -123,6 +142,21 @@ flutter:
           weight: 400
         - asset: fonts/notosanskr_bold.otf
           weight: 500
+
+    - family: Kenyan
+      fonts:
+        - asset: fonts/kenyan_coffee_bold_italic.ttf
+
+    - family: LemonMilk
+      fonts:
+        - asset: fonts/lemonmilk_light.otf
+          weight: 300
+        - asset: fonts/lemonmilk_lightitalic.otf
+          weight: 300
+          style: italic
+        - asset: fonts/lemonmilk_bolditalic.otf
+          weight: 500
+          style: italic
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
