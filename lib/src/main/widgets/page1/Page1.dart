@@ -15,10 +15,17 @@ class Page1 extends StatefulWidget {
 class Page1State extends State<Page1> {
   int curPageIdx = 0;
   double page = 2.0;
-  String defaultCardImg = "https://firebasestorage.googleapis.com/v0/b/momentrip-32cf2.appspot.com/o/home_01.png?alt=media&token=94836d9e-b84d-442f-b718-421562c1964d";
   PageController pageController;
 
   List<Page1Result> tripResults;
+  Page1Result defaultTrip = Page1Result(
+      tripImgUrl: "https://firebasestorage.googleapis.com/v0/b/momentrip-32cf2.appspot.com/o/home_01.png?alt=media&token=94836d9e-b84d-442f-b718-421562c1964d",
+      city: "To the new world",
+      date: "RIGHT NOW",
+      title: "GO ABROAD!",
+      tripIdx: -1,
+      year: "2020",
+      country: "Go Abroad!");
 
   @override
   void initState() {
@@ -38,11 +45,16 @@ class Page1State extends State<Page1> {
               child: Row(children: <Widget>[
                 Expanded(
                   child: Text(
-                    '2019',
+                    DateTime
+                        .now()
+                        .year
+                        .toString(),
                     style: TextStyle(
                         color: Color.fromARGB(255, 150, 150, 150),
                         fontSize: 28,
-                        fontFamily: 'Kenyan',),
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.italic,
+                      fontFamily: 'LemonMilk',),
                   ),
                 ),
                 MaterialButton(
@@ -61,35 +73,58 @@ class Page1State extends State<Page1> {
               ]),
             ),
             Expanded(
-              child: NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  if (notification is ScrollUpdateNotification) {
-                    setState(() {
-                      page = pageController.page;
-                    });
-                  }
-                  return true;
-                },
-                child: PageView.builder(
-                    controller: pageController,
-                    onPageChanged: (pos) {
-                      setState(() {
-                        curPageIdx = pos;
-                      });
-                    },
-                    scrollDirection: Axis.horizontal,
-                    pageSnapping: true,
-                    physics: BouncingScrollPhysics(),
-                    itemCount: tripResults == null || tripResults.length == 0 ? 1 : tripResults.length,
-                    itemBuilder: (context, index) {
+              child: Builder(
+                  builder: (context) {
+                    if (tripResults == null || tripResults.length == 0) {
                       return BigTravelCard(
-                        name: tripResults == null || tripResults.length == 0 ? "GO ABROAD!" : tripResults.elementAt(index).title,
-                        imageUrl: tripResults == null || tripResults.length == 0 ? defaultCardImg : tripResults.elementAt(index).tripImgUrl,
-                        city: tripResults == null || tripResults.length == 0 ? "TO THE NEW WORLD" : tripResults.elementAt(index).city,
-                        date: tripResults == null || tripResults.length == 0 ? "RIGHT NOW" : tripResults.elementAt(index).date,
+                        idx: defaultTrip.tripIdx,
+                        name: defaultTrip.title,
+                        imageUrl: defaultTrip.tripImgUrl,
+                        city: defaultTrip.city,
+                        date: defaultTrip.date,
                       );
-                    }),
-              ),
+                    }
+                    return NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        if (notification is ScrollUpdateNotification) {
+                          setState(() {
+                            page = pageController.page;
+                          });
+                        }
+                        return true;
+                      },
+                      child: PageView.builder(
+                          controller: pageController,
+                          onPageChanged: (pos) {
+                            setState(() {
+                              curPageIdx = pos;
+                            });
+                          },
+                          scrollDirection: Axis.horizontal,
+                          pageSnapping: true,
+                          physics: BouncingScrollPhysics(),
+                          itemCount: tripResults.length,
+                          itemBuilder: (context, index) {
+                            return BigTravelCard(
+                              idx: tripResults
+                                  .elementAt(index)
+                                  .tripIdx,
+                              name: tripResults
+                                  .elementAt(index)
+                                  .title,
+                              imageUrl: tripResults
+                                  .elementAt(index)
+                                  .tripImgUrl,
+                              city: tripResults
+                                  .elementAt(index)
+                                  .city,
+                              date: tripResults
+                                  .elementAt(index)
+                                  .date,
+                            );
+                          }),
+                    );
+                  }),
             ),
             Padding(
               padding:
@@ -112,7 +147,7 @@ class Page1State extends State<Page1> {
   }
 
   void tryGetTrips() async {
-    Response response = await MyApp.getDio().get("/trip");
+    Response response = await MyApp.getDio().get("/alltrip");
     Page1Response page1response = Page1Response.fromJson(response.data);
     if (page1response == null) {
       return;

@@ -1,13 +1,14 @@
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import 'MainService.dart';
-import 'interfaces/MainView.dart';
-import 'package:flutter/material.dart';
+import './models/MainResponse.dart';
+import '../../main.dart';
+import 'models/MainParams.dart';
 import 'widgets/page1/Page1.dart';
 import 'widgets/page3/Page3.dart';
-import './models/MainResponse.dart';
 
 
 class MainPage extends StatefulWidget  {
@@ -18,7 +19,7 @@ class MainPage extends StatefulWidget  {
 
 }
 
-class _MainPageState extends State<MainPage> implements MainView{
+class _MainPageState extends State<MainPage> {
 
   int _selectedPageIdx = 0;
 
@@ -62,17 +63,28 @@ class _MainPageState extends State<MainPage> implements MainView{
       bottomNavigationBar: Builder(
         builder: (context) {
           return BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                  icon: Icon(Icons.view_array),
+                  icon: Image.asset(
+                    "images/icon_home_deactivate.png", width: 32, height: 32,),
+                  activeIcon: Image.asset(
+                    "images/icon_home_activate.png", width: 32, height: 32,),
                   title: Text('Home')
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add_box),
+                icon: Image.asset("images/icon_add_deactivate.png", width: 32,
+                  height: 32,
+                  color: Color.fromARGB(255, 100, 100, 100),),
+                activeIcon: Image.asset(
+                  "images/icon_add_activate.png", width: 32, height: 32,),
                 title: Text('Add'),
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person_outline),
+                  icon: Image.asset(
+                    "images/icon_mypage_deactivate.png", width: 32,
+                    height: 32,),
+                  activeIcon: Image.asset(
+                    "images/icon_mypage_activate.png", width: 32, height: 32,),
                   title: Text('MyPage')
               ),
             ],
@@ -87,7 +99,6 @@ class _MainPageState extends State<MainPage> implements MainView{
               setState(() {
                 if (idx == 1) {
                   tryGetStatus(context);
-                  //selectDate(context);
                 } else {
                   _selectedPageIdx = idx;
                 }
@@ -99,28 +110,25 @@ class _MainPageState extends State<MainPage> implements MainView{
     );
   }
 
-  ProgressDialog dialog;
-  void showProgressDialog(BuildContext context) async {
-    if (dialog == null) {
-      dialog = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: true);
+  void tryGetStatus(BuildContext context) async {
+    ProgressDialog progressDialog = ProgressDialog(
+        context, type: ProgressDialogType.Normal, isDismissible: true);
+    await progressDialog.show();
+    Response response = await MyApp.getDio().get("/tripstatus");
+    MainResponse mainResponse = MainResponse.fromJson(response.data);
+    await progressDialog.hide();
+    if (mainResponse == null || !mainResponse.isSuccess) {
+      return;
     }
-    await dialog.show();
-  }
-  Future<void> hideProgressDialog(BuildContext context) async {
-    await dialog.hide();
-  }
-
-  void tryGetStatus(BuildContext context) {
-    showProgressDialog(context);
-    final MainService mMainService = MainService(this);
-    mMainService.getStatus(context);
-  }
-
-
-  void tryPostTravel(BuildContext context, String startTime, String endTime) {
-    showProgressDialog(context);
-    final MainService mMainService = MainService(this);
-    mMainService.postTrip(context, startTime, endTime);
+    switch (mainResponse.code) {
+      case 200:
+        Navigator.pushNamed(context, "/travel",
+            arguments: mainResponse.mainResult.elementAt(0));
+        break;
+      case 201:
+        selectDate(context);
+        break;
+    }
   }
 
   void selectDate(BuildContext context) async {
@@ -131,15 +139,40 @@ class _MainPageState extends State<MainPage> implements MainView{
         firstDate: DateTime(1950),
         lastDate: DateTime(2100));
     if (pickedDates != null && pickedDates.length == 2) {
-      tryPostTravel(context, pickedDates.elementAt(0).toIso8601String(), pickedDates.elementAt(1).toIso8601String());
+      DateTime firstDate = DateTime(
+          pickedDates
+              .elementAt(0)
+              .year, pickedDates
+          .elementAt(0)
+          .month, pickedDates
+          .elementAt(0)
+          .day);
+      DateTime lastDate = DateTime(
+          pickedDates
+              .elementAt(0)
+              .year, pickedDates
+          .elementAt(0)
+          .month, pickedDates
+          .elementAt(0)
+          .day, 23, 59
+      );
+      tryPostTravel(
+          context, firstDate.toIso8601String(), lastDate.toIso8601String());
     }
   }
 
-  @override
-  void validateFailure(BuildContext buildContext) {
-    hideProgressDialog(buildContext)
-        .whenComplete(() {
-      Scaffold.of(buildContext).showSnackBar(SnackBar(
+  void tryPostTravel(BuildContext context, String startTime,
+      String endTime) async {
+    ProgressDialog progressDialog = ProgressDialog(
+        context, type: ProgressDialogType.Normal, isDismissible: true);
+    await progressDialog.show();
+    Response response = await MyApp.getDio().post(
+        "/trip", data: MainParams(startDate: startTime, endDate: endTime));
+    MainObjectResponse mainObjectResponse = MainObjectResponse.fromJson(
+        response.data);
+    await progressDialog.hide();
+    if (mainObjectResponse == null || !mainObjectResponse.isSuccess) {
+      Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
           "새로운 여행 생성에 실패하였습니다.",
           style: TextStyle(
@@ -150,55 +183,32 @@ class _MainPageState extends State<MainPage> implements MainView{
         action: SnackBarAction(
           label: "닫기",
           onPressed: () {
-            Scaffold.of(buildContext).hideCurrentSnackBar();
+            Scaffold.of(context).hideCurrentSnackBar();
           },
         ),
       ));
-    });
-
-  }
-
-  @override
-  void validateSuccess(BuildContext buildContext, MainObjectResponse mainObjectResponse) {
-    hideProgressDialog(buildContext)
-        .then((value) {
-      Scaffold.of(buildContext).showSnackBar(SnackBar(
-        content: Text(
-          "새로운 여행을 생성하였습니다.",
-          style: TextStyle(
-              fontFamily: "NotoSansKR",
-              fontWeight: FontWeight.w300,
-              color: Color.fromARGB(255, 248, 248, 2)),
-        ),
-        action: SnackBarAction(
-          label: "닫기",
-          onPressed: () {
-            Scaffold.of(buildContext).hideCurrentSnackBar();
-          },
-        ),
-      ));
-      Future.delayed(Duration(milliseconds: 500), () {
-        Scaffold.of(buildContext).hideCurrentSnackBar();
-        Navigator.pushNamed(context, "/travel", arguments: mainObjectResponse.mainResult.tripIdx);
-      });
-    });
-  }
-
-  @override
-  void validateStatusFailure(BuildContext buildContext) {
-    hideProgressDialog(buildContext);
-  }
-
-  @override
-  void validateStatusSuccess(BuildContext buildContext, MainResponse mainResponse) {
-    hideProgressDialog(buildContext);
-    switch (mainResponse.code) {
-      case 200:
-        Navigator.pushNamed(context, "/travel", arguments: mainResponse.mainResult.elementAt(0).tripIdx);
-        break;
-      case 201:
-        selectDate(buildContext);
-        break;
+      return;
     }
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(
+        "새로운 여행을 생성하였습니다.",
+        style: TextStyle(
+            fontFamily: "NotoSansKR",
+            fontWeight: FontWeight.w300,
+            color: Color.fromARGB(255, 248, 248, 2)),
+      ),
+      action: SnackBarAction(
+        label: "닫기",
+        onPressed: () {
+          Scaffold.of(context).hideCurrentSnackBar();
+        },
+      ),
+    ));
+    Future.delayed(Duration(milliseconds: 500), () {
+      Scaffold.of(context).hideCurrentSnackBar();
+      Navigator.pushNamed(
+          context, "/travel", arguments: mainObjectResponse.mainResult);
+    });
+
   }
 }

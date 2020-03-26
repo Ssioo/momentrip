@@ -25,6 +25,7 @@ class CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   var cameraIcon = Icons.videocam;
   var recordedTime = 0.0;
   int tripIdx;
+  int day;
   Geo.Position position;
   Timer recordTimer;
 
@@ -36,6 +37,7 @@ class CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         TravelArgument argument = ModalRoute.of(context).settings.arguments;
         tripIdx = argument.tripIdx;
         position = argument.position;
+        day = argument.day;
       });
     });
     WidgetsBinding.instance.addObserver(this);
@@ -313,15 +315,18 @@ class CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
       setState(() {
         recordedTime = 0.0;
       });
-      int result = await Navigator.pushNamed(context, "/camera/result",
+      dynamic result = await Navigator.pushNamed(context, "/camera/result",
           arguments: CameraArgument(
               tripIdx: tripIdx,
               filePath: videoFilePath,
               time: recordedTimePass,
               position: position,
-              createdAt: videoFilePath.substring(videoFilePath.lastIndexOf('/'), videoFilePath.lastIndexOf('.'))));
-      if (result == 0) {
-        Navigator.pop(context, 0);
+              day: day,
+              createdAt: videoFilePath.substring(
+                  videoFilePath.lastIndexOf('/') + 1,
+                  videoFilePath.lastIndexOf('.'))));
+      if (result == "Success") {
+        Navigator.pop(context, "Success");
       }
     } on CameraException catch (e) {
       showInSnackBar("CAMERA ERROR WITH " + e.code);
@@ -349,7 +354,9 @@ class CameraArgument {
   double time;
   Geo.Position position;
   String createdAt;
+  int day;
 
-  CameraArgument({this.tripIdx, this.filePath, this.time, this.position, this.createdAt});
+  CameraArgument(
+      {this.tripIdx, this.filePath, this.time, this.position, this.createdAt, this.day});
 
 }

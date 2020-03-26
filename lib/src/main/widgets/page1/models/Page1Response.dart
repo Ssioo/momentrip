@@ -27,6 +27,10 @@ class Page1Result {
   String date;
   String year;
 
+
+  Page1Result({this.tripIdx, this.title, this.tripImgUrl, this.country,
+    this.city, this.date, this.year});
+
   Page1Result.fromJson(Map<String, dynamic> json)
       : tripIdx = json['tripIdx'],
         title = json['title'],

@@ -96,6 +96,17 @@ dependencies:
   # https://pub.dev/packages/geolocator
   geolocator: ^5.3.0
 
+  intl: ^0.16.0
+
+  # https://pub.dev/packages/snaplist
+  snaplist: ^0.1.8
+
+  # https://pub.dev/packages/sprintf#-installing-tab-
+  sprintf: ^4.0.2
+
+  # https://pub.dev/packages/collection#-installing-tab-
+  collection: ^1.14.11
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

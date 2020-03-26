@@ -1,48 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CUSTOM_FILTER" value="file" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aed3cf2b-8af2-4c6c-b67a-c4e295e35da9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/fonts/kenyan_coffee_bold_italic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/lemonmilk_bolditalic.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/lemonmilk_light.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fonts/lemonmilk_lightitalic.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/img_mypage_airplane.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/camera_result/CameraResultPage.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/camera_result/models/CameraResultParams.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/camera_result/models/CameraResultResponse.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/main/models/MainResponse.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/models/Page1Response.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/MyPageTravelCard.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/interfaces/Page3View.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/models/Page3Response.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/settings/SettingsPage.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/videos/video_login.mp4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/icon_add_activate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/icon_add_deactivate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/icon_home_deactivate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/icon_mypage_activate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/icon_mypage_deactivate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/story/StoryPage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/travel/widgets/EmptyCircularStoryWidget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/travel/widgets/VideoSliderCard.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/google-services.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/icon_home_activate.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/icon_home_activate.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/img_travelcard.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/camera/CameraPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/camera/CameraPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/camera_result/CameraResultPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/camera_result/CameraResultPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/main/MainPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/MainPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/MainService.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/MainService.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/interfaces/MainView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/interfaces/MainView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/main/MainService.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/main/interfaces/MainView.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/main/models/MainResponse.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/models/MainResponse.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page1/BigTravelCard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/BigTravelCard.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page1/Page1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/Page1.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page1/models/Page1Response.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/models/Page1Response.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page3/MyPageTravelCard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/MyPageTravelCard.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page3/Page3.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/Page3.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/sign_in/interfaces/SignInView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/sign_in/interfaces/SignInView.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/sign_in/models/SignInResponse.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/sign_in/models/SignInResponse.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/sign_up/SignUpPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/sign_up/SignUpPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/settings/SettingsPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/settings/SettingsPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/travel/TravelPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/travel/TravelPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/travel/models/TravelResponse.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/travel/models/TravelResponse.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/travel/widgets/CircularStoryWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/travel/widgets/CircularStoryWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -75,17 +72,17 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/fonts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/android/app" />
     <property name="settings.editor.selected.configurable" value="project.kotlinCompiler" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\woois\Documents\GitHub\momentrip\android\app" />
+      <recent name="C:\Users\woois\Documents\GitHub\momentrip\images" />
       <recent name="C:\Users\woois\Documents\GitHub\momentrip\fonts" />
       <recent name="C:\Users\woois\Documents\GitHub\momentrip\videos" />
-      <recent name="C:\Users\woois\Documents\GitHub\momentrip\android\app" />
       <recent name="C:\Users\woois\Documents\GitHub\momentrip" />
-      <recent name="C:\Users\woois\Documents\GitHub\momentrip\lib\config" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\woois\Documents\GitHub\momentrip\lib\src\camera_result\models" />

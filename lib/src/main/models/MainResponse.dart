@@ -8,7 +8,7 @@ class MainResponse {
       : isSuccess = json['isSuccess'],
         code = json['code'],
         message = json['message'],
-        mainResult = (json['result'] as List)
+        mainResult = json['result'] == null ? null : (json['result'] as List)
             .map((e) => MainResult.fromJson(e))
             .toList();
 
@@ -22,16 +22,26 @@ class MainResponse {
 
 class MainResult {
   int tripIdx;
-  String createdAt;
+  String title;
+  String startedAt;
   String endedAt;
+
+
+  MainResult({this.tripIdx, this.title, this.startedAt, this.endedAt});
 
   MainResult.fromJson(Map<String, dynamic> json)
       : tripIdx = json['tripIdx'],
-        createdAt = json['createdAt'],
+        title = json['title'],
+        startedAt = json['startedAt'],
         endedAt = json['endedAt'];
 
   Map<String, dynamic> toJson() =>
-      {'tripIdx': tripIdx, 'createdAt': createdAt, 'endedAt': endedAt};
+      {
+        'tripIdx': tripIdx,
+        'title': title,
+        'startedAt': startedAt,
+        'endedAt': endedAt
+      };
 }
 
 class MainObjectResponse {

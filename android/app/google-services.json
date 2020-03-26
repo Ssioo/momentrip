@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "376806552313-q1a0rlderg7c70bui9glv1kkr85i49cd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whoissio.momentrip",
+            "certificate_hash": "323fbe077653b685028b737e80149cf25da62bfe"
+          }
+        },
+        {
+          "client_id": "376806552313-5rp8e213tjeavfbq4dij8gmv8mssrng6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whoissio.momentrip",
+            "certificate_hash": "a918a1639af5052c95d3e994bd616f8cd04c0bd6"
+          }
+        },
+        {
           "client_id": "376806552313-jsv2mlgmi8lc2gqqv82m79ia5r74nnue.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

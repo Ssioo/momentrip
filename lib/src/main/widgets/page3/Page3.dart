@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:momentrip/src/main/widgets/page1/models/Page1Response.dart';
+import 'package:momentrip/src/main/widgets/page3/MyPageTravelCard.dart';
 
 import '../../../../main.dart';
 import 'models/Page3Response.dart';
@@ -14,11 +15,13 @@ class Page3 extends StatefulWidget {
 
 class Page3State extends State<Page3> {
   Page3Result myPageResult;
+  List<Page1Result> tripResults;
 
   @override
   void initState() {
     super.initState();
     tryGetMyPage(context);
+    tryGetTrips();
   }
 
   @override
@@ -169,18 +172,10 @@ class Page3State extends State<Page3> {
           ),
           SliverStaggeredGrid.countBuilder(
               crossAxisCount: 4,
-              itemCount: 8,
+            itemCount: 0,
               itemBuilder: (context, index) {
-                return Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    CachedNetworkImage(
-                      imageUrl: "https://firebasestorage.googleapis.com/v0/b/momentrip-32cf2.appspot.com/o/mypage_04.png?alt=media&token=49288536-92fd-4bd1-9007-004548736f19",
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-                  ],
+                return MyPageTravelCard(
+
                 );
               },
               staggeredTileBuilder: (index) {
@@ -202,6 +197,17 @@ class Page3State extends State<Page3> {
     }
     setState(() {
       myPageResult = page3Response.result;
+    });
+  }
+
+  void tryGetTrips() async {
+    Response response = await MyApp.getDio().get("/alltrip");
+    Page1Response page1response = Page1Response.fromJson(response.data);
+    if (page1response == null) {
+      return;
+    }
+    setState(() {
+      tripResults = page1response.result;
     });
   }
 

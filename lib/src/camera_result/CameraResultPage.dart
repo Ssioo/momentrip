@@ -8,7 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
 import 'package:momentrip/main.dart';
 import 'package:momentrip/src/camera/CameraPage.dart';
 import 'package:momentrip/src/camera_result/models/CameraResultParams.dart';
@@ -27,6 +26,7 @@ class CameraResultState extends State<CameraResultPage> {
   VideoPlayerController videoPlayerController;
   String filePath;
   int tripIdx;
+  int day;
   Position position;
   String createdAt;
   Future<void> initVideo;
@@ -46,9 +46,12 @@ class CameraResultState extends State<CameraResultPage> {
         filePath = argument.filePath;
         tripIdx = argument.tripIdx;
         position = argument.position;
+        day = argument.day;
         createdAt = argument.createdAt;
         videoFile = File(filePath);
         print(filePath);
+        print(day);
+        print(createdAt);
         videoPlayerController = VideoPlayerController.file(videoFile);
         initVideo = videoPlayerController.initialize();
         videoPlayerController.setLooping(true);
@@ -157,8 +160,7 @@ class CameraResultState extends State<CameraResultPage> {
                         child: Container(
 
                         ),
-                      )
-                      ,
+                      ),
                       Parallelogram(
                         cutLength: 10.0,
                         child: SizedBox(
@@ -211,7 +213,6 @@ class CameraResultState extends State<CameraResultPage> {
                   ),
                   onTap: () {
                     // place 선택
-                    //tryUploadVideo(tripIdx, createdAt, locationData);
                   },
                 ),
               ),
@@ -223,20 +224,6 @@ class CameraResultState extends State<CameraResultPage> {
   }
 
   void trySearchLocation(Position position) async {
-    print("GOOGLE GEOCODING");
-    // By GOOGLE
-    /*BaseOptions options = BaseOptions(
-        baseUrl: "https://maps.googleapis.com/maps/api/",
-        connectTimeout: 5000,
-        receiveTimeout: 5000,);
-    Dio dio = Dio(options);
-    dio.interceptors.add(LogInterceptor(responseBody: true));
-    String latLng = locationData.latitude.toString() + "," + locationData.longitude.toString();
-    Response response = await dio.get(
-        'geocode/json', 
-        queryParameters: {"latlng" : latLng, "key" : "AIzaSyD_8X8izni4c9c8Q9qu-pCm8JtXM3mJBoE"});
-    CameraGeoCodedResponse geoCodedResponse = CameraGeoCodedResponse.fromJson(response.data);*/
-
     // By Geolocator Library
     List<Placemark> placeMarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude, localeIdentifier: 'en');
     print(placeMarks.elementAt(0).toJson());
@@ -272,8 +259,7 @@ class CameraResultState extends State<CameraResultPage> {
 
     var downloadVideoUrl = await storageReference.child('$createdAt.mp4').getDownloadURL();
     var downloadThumbUrl = await storageReference.child('$createdAt.jpg').getDownloadURL();
-
-    Response response = await MyApp.getDio().post('trip/$tripIdx', data: CameraResultParams(
+    CameraResultParams params = CameraResultParams(
       categoryIdx: 1,
       videoUrl: downloadVideoUrl,
       thumbnail: downloadThumbUrl,
@@ -284,13 +270,15 @@ class CameraResultState extends State<CameraResultPage> {
       address: address,
       city: city,
       country: country,
-      days: 1,
-    ).toJson()
+      days: day,
     );
+    print(params.toJson());
+    Response response = await MyApp.getDio().post(
+        'trip/$tripIdx', data: params.toJson());
     DefaultResponse defaultResponse = DefaultResponse.fromJson(response.data);
     await pr.hide();
-    if (defaultResponse == null) {
-      Navigator.pop(context, 0);
+    if (defaultResponse != null) {
+      Navigator.pop(context, "Success");
       return;
     }
     setState(() {

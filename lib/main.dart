@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:momentrip/src/camera/CameraPage.dart';
 import 'package:momentrip/src/camera_result/CameraResultPage.dart';
+import 'package:momentrip/src/story/StoryPage.dart';
 import 'package:momentrip/src/travel/TravelPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
     getSharedPreferences();
     KakaoContext.clientId = "6b9b8c225bbb9a1d3a14e3cd23ef6632";
 
+
     return MaterialApp(
       title: 'Momentrip',
       localizationsDelegates: [
@@ -82,7 +84,7 @@ class MyApp extends StatelessWidget {
         const Locale('ko')
       ],
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepOrange,
       ),
       initialRoute: '/',
       routes: {
@@ -95,6 +97,7 @@ class MyApp extends StatelessWidget {
         '/camera' : (context) => CameraPage(),
         '/settings': (context) => SettingsPage(),
         '/camera/result' : (context) => CameraResultPage(),
+        '/travel/story': (context) => StoryPage(),
       },
     );
   }
