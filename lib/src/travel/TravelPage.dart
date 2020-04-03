@@ -88,41 +88,44 @@ class TravelPageState extends State<TravelPage> {
                     zoom: 13),
                 onMapCreated: (controller) async {
                   mapController = controller;
-                  travelResults = await tryGetDetail();
-                  position = await getPosition();
-                  if (travelResults == null) {
-                    mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                        LatLng(position.latitude, position.longitude), 14));
-                  } else {
-                    List<LatLng> latLngs = List();
-                    for (var point in travelResults) {
-                      mapController.addCircle(CircleOptions(
-                          geometry: LatLng(point.lat, point.lng),
-                          circleRadius: 8,
-                          circleOpacity: 1,
-                          circleColor: "#FF653E"));
-                      latLngs.add(LatLng(point.lat, point.lng));
-                    }
-                    mapController.addLine(LineOptions(
-                        geometry: latLngs,
-                        lineColor: "#FFFFFF",
-                        lineWidth: 1
-                    ));
-                    mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                        LatLng(latLngs
-                            .elementAt(0)
-                            .latitude - 0.0015, latLngs
-                            .elementAt(0)
-                            .longitude), 15));
-                    mapController.onCircleTapped.add((circle) {
+                  try {
+                    travelResults = await tryGetDetail();
+                    position = await getPosition();
+                    if (travelResults == null) {
                       mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                          circle.options.geometry, 16));
-                    });
+                          LatLng(position.latitude, position.longitude), 14));
+                    } else {
+                      List<LatLng> latLngs = List();
+                      for (var point in travelResults) {
+                        mapController.addCircle(CircleOptions(
+                            geometry: LatLng(point.lat, point.lng),
+                            circleRadius: 8,
+                            circleOpacity: 1,
+                            circleColor: "#FF653E"));
+                        latLngs.add(LatLng(point.lat, point.lng));
+                      }
+                      mapController.addLine(LineOptions(
+                          geometry: latLngs,
+                          lineColor: "#FFFFFF",
+                          lineWidth: 1
+                      ));
+                      mapController.animateCamera(CameraUpdate.newLatLngZoom(
+                          LatLng(latLngs
+                              .elementAt(0)
+                              .latitude - 0.0015, latLngs
+                              .elementAt(0)
+                              .longitude), 15));
+                      mapController.onCircleTapped.add((circle) {
+                        mapController.animateCamera(CameraUpdate.newLatLngZoom(
+                            circle.options.geometry, 16));
+                      });
+                    }
+                  } catch (e) {
+
                   }
                 },
                 styleString: MapboxStyles.DARK,
-                myLocationEnabled: tripSummary == null ||
-                    tripSummary.startedAt == null ? true : false,
+                myLocationEnabled: tripSummary == null || tripSummary.startedAt == null,
                 myLocationTrackingMode: MyLocationTrackingMode.None,
                 trackCameraPosition: true,
                 compassEnabled: true,
@@ -150,12 +153,10 @@ class TravelPageState extends State<TravelPage> {
                       VerticalDivider(
                         width: 4,
                       ),
-                  itemCount: travelMap == null ? 0 : (travelMap.keys.length < 5
-                      ? 5
-                      : travelMap.keys.length),
+                  itemCount: (travelMap == null || travelMap.keys.length < 5) ? 5 : travelMap.keys.length,
                   padding: EdgeInsets.only(left: 20, right: 20,),
                   itemBuilder: (context, index) {
-                    if (index < travelMap.keys.length) {
+                    if (travelMap != null && index < travelMap.keys.length) {
                       return CircularStoryWidget(
                         startedAt: tripSummary.startedAt,
                         travelResultInDay: travelMap[index + 1],
@@ -172,35 +173,32 @@ class TravelPageState extends State<TravelPage> {
                 alignment: Alignment.bottomCenter,
                 child: Builder(
                     builder: (context) {
-                      var height = MediaQuery
-                          .of(context)
-                          .size
-                          .height;
+                      var height = MediaQuery.of(context).size.height;
                       if (height < 738) {
-                        return Container();
+                        return Container(
+                          height: 0,
+                        );
+                      }
+                      if (travelResults == null) {
+                        return Container(
+                          height: 0,
+                        );
                       }
                       return Container(
                         height: 398,
                         padding: EdgeInsets.only(bottom: 110),
+
                         child: SnapList(
                           sizeProvider: (index, data) => Size(175, 288),
                           separatorProvider: (index, data) => Size(4, 288),
-                          count: travelResults == null ? 0 : travelResults
-                              .length,
+                          count: travelResults.length,
                           builder: (context, index, data) {
+                            TravelResult travel = travelResults.elementAt(index);
                             return VideoSliderCard(
-                              idx: travelResults
-                                  .elementAt(index)
-                                  .videoIdx,
-                              title: travelResults
-                                  .elementAt(index)
-                                  .address,
-                              thumbnailUrl: travelResults
-                                  .elementAt(index)
-                                  .thumbnailUrl,
-                              videoUrl: travelResults
-                                  .elementAt(index)
-                                  .videoUrl,
+                              idx: travel.videoIdx,
+                              title: travel.address,
+                              thumbnailUrl: travel.thumbnailUrl,
+                              videoUrl: travel.videoUrl,
                             );
                           },
                           padding: EdgeInsets.only(left: 30, right: 30),
@@ -214,9 +212,8 @@ class TravelPageState extends State<TravelPage> {
                   padding: const EdgeInsets.only(bottom: 31),
                   child: Builder(
                       builder: (context) {
-                        if (tripSummary == null ||
-                            tripSummary.startedAt == null) {
-                          return Container();
+                        if (tripSummary == null || tripSummary.startedAt == null) {
+                          return Container(height: 0,);
                         }
                         return FloatingActionButton(
                           backgroundColor: Colors.white,
@@ -227,16 +224,18 @@ class TravelPageState extends State<TravelPage> {
                             dynamic result = await Navigator.pushNamed(
                                 context, "/camera", arguments: TravelArgument(
                                 tripIdx: tripSummary.tripIdx,
-                                day: DateTime
-                                    .now()
-                                    .difference(
-                                    DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                                        .parse(tripSummary.startedAt))
-                                    .inDays + 1,
+                                day: getDiff(tripSummary.startedAt),
                                 position: position));
                             if (result == "Success") {
                               // 여행 상세 다시 받기.
                               travelResults = await tryGetDetail();
+                              TravelResult lastResult = travelResults.elementAt(travelResults.length - 1);
+                              mapController.addCircle(CircleOptions(
+                                  geometry: LatLng(lastResult.lat, lastResult.lng),
+                                  circleRadius: 8,
+                                  circleOpacity: 1,
+                                  circleColor: "#FF653E"));
+                              mapController.lines.elementAt(0).options.geometry.add(LatLng(lastResult.lat, lastResult.lng));
                             }
                           },
                           child: Icon(
@@ -254,19 +253,36 @@ class TravelPageState extends State<TravelPage> {
     );
   }
 
+  int getDiff(String startedAt) {
+    if (tripSummary != null) {
+      DateTime nowDate = DateTime.now();
+      DateTime startDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(tripSummary.startedAt);
+      return nowDate.difference(startDate).inDays + 1;
+    } else {
+      return 1;
+    }
+  }
+
   Future<List<TravelResult>> tryGetDetail() async {
-    Response response = await MyApp.getDio().get(
-        "/trip/${tripSummary.tripIdx}");
-    TravelResponse travelResponse = TravelResponse.fromJson(response.data);
-    if (travelResponse == null) {
+    try {
+      Response response = await MyApp.getDio().get(
+          "/trip/${tripSummary.tripIdx}");
+      TravelResponse travelResponse = TravelResponse.fromJson(response.data);
+      if (travelResponse == null) {
+        throw Exception();
+      }
+      setState(() {
+        travelResults = travelResponse.travelList;
+        if (travelResults != null) {
+          travelMap = groupBy(travelResults, (key) => key.day);
+        }
+      });
+
+      return travelResults;
+    } catch (e) {
+      print(e);
       return null;
     }
-    setState(() {
-      travelResults = travelResponse.travelList;
-      travelMap = groupBy(travelResults, (key) => key.day);
-    });
-
-    return travelResults;
   }
 
 }

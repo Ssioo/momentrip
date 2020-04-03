@@ -34,6 +34,7 @@ class CameraResultState extends State<CameraResultPage> {
   String city;
   String country;
   String address;
+  Color titleColor = Colors.white;
   Uint8List thumbnailByte;
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -195,7 +196,17 @@ class CameraResultState extends State<CameraResultPage> {
               child: Container(
                 //color: Colors.black,
                 padding: EdgeInsets.only(bottom: 14, left: 20, right: 20, top: 100),
-                child: InkWell(
+                child: GestureDetector(
+                  onTapDown: (position) {
+                    setState(() {
+                      titleColor = Color.fromRGBO(255, 255, 255, 0.38);
+                    });
+                  },
+                  onTapUp: (position) {
+                    setState(() {
+                      titleColor = Color.fromRGBO(255, 255, 255, 1);
+                    });
+                  },
                   child: Text(
                     address == null ? "" : address,
                     style: TextStyle(
@@ -203,7 +214,7 @@ class CameraResultState extends State<CameraResultPage> {
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.italic,
                         fontSize: 28,
-                        color: Colors.white,
+                        color: titleColor,
                       shadows: [Shadow(
                         blurRadius: 10.0,
                         color: Color.fromRGBO(24, 23, 23, 0.38),
@@ -225,71 +236,85 @@ class CameraResultState extends State<CameraResultPage> {
 
   void trySearchLocation(Position position) async {
     // By Geolocator Library
-    List<Placemark> placeMarks = await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude, localeIdentifier: 'en');
-    print(placeMarks.elementAt(0).toJson());
-    setState(() {
-      country = placeMarks.elementAt(0).country;
-      city = placeMarks.elementAt(0).administrativeArea;
-      address = placeMarks.elementAt(0).name + (placeMarks.elementAt(0).name == null ? "" : " ")
-          + placeMarks.elementAt(0).thoroughfare + (placeMarks.elementAt(0).thoroughfare == null ? "" : ", ")
-          + placeMarks.elementAt(0).subLocality + (placeMarks.elementAt(0).subLocality == null ? "" : " ")
-          + placeMarks.elementAt(0).locality + (placeMarks.elementAt(0).locality == null ? "" : ", ")
-          + placeMarks.elementAt(0).subAdministrativeArea;
-    });
+    try {
+      List<Placemark> placeMarks = await Geolocator().placemarkFromCoordinates(
+          position.latitude, position.longitude, localeIdentifier: 'en');
+      print(placeMarks.elementAt(0).toJson());
+      setState(() {
+        Placemark place = placeMarks.elementAt(0);
+        country = place.country;
+        city = place.administrativeArea;
+        address = place.name + (place.name == null ? "" : " ")
+            + place.thoroughfare + (place.thoroughfare == null ? "" : ", ")
+            + place.subLocality + (place.subLocality == null ? "" : " ")
+            + place.locality + (place.locality == null ? "" : ", ")
+            + place.subAdministrativeArea;
+      });
+    } catch (e) {
+      scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(
+          "위치 정보를 파악할 수 없습니다."
+        ),
+      ));
+    }
   }
 
   void tryUploadVideo(int tripIdx, String createdAt, Position position) async {
     ProgressDialog pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
-    await pr.show();
-    final FirebaseApp app = await FirebaseApp.configure(
-        name: 'Momentrip',
-        options: FirebaseOptions(
-          googleAppID: Platform.isIOS ? '' : '1:376806552313:android:4f1721151cdf6c803ba828',
-          gcmSenderID: '376806552313',
-          apiKey: 'AIzaSyD_8X8izni4c9c8Q9qu-pCm8JtXM3mJBoE',
-          projectID: 'momentrip-32cf2',
-        )
-    );
-    final StorageReference storageReference = FirebaseStorage(app: app, storageBucket: 'gs://momentrip-32cf2.appspot.com').ref().child('userUploads');
-    final StorageUploadTask uploadVideoTask = storageReference.child('$createdAt.mp4').putFile(videoFile);
-    final StorageUploadTask uploadThumbTask = storageReference.child('$createdAt.jpg').putData(thumbnailByte);
+    try {
+      await pr.show();
+      final FirebaseApp app = await FirebaseApp.configure(
+          name: 'Momentrip',
+          options: FirebaseOptions(
+            googleAppID: Platform.isIOS ? '' : '1:376806552313:android:4f1721151cdf6c803ba828',
+            gcmSenderID: '376806552313',
+            apiKey: 'AIzaSyD_8X8izni4c9c8Q9qu-pCm8JtXM3mJBoE',
+            projectID: 'momentrip-32cf2',
+          )
+      );
+      final StorageReference storageReference = FirebaseStorage(app: app, storageBucket: 'gs://momentrip-32cf2.appspot.com').ref().child('userUploads');
+      final StorageUploadTask uploadVideoTask = storageReference.child('$createdAt.mp4').putFile(videoFile);
+      final StorageUploadTask uploadThumbTask = storageReference.child('$createdAt.jpg').putData(thumbnailByte);
+      await uploadVideoTask.onComplete;
+      await uploadThumbTask.onComplete;
 
-    await uploadVideoTask.onComplete;
-    await uploadThumbTask.onComplete;
-
-    var downloadVideoUrl = await storageReference.child('$createdAt.mp4').getDownloadURL();
-    var downloadThumbUrl = await storageReference.child('$createdAt.jpg').getDownloadURL();
-    CameraResultParams params = CameraResultParams(
-      categoryIdx: 1,
-      videoUrl: downloadVideoUrl,
-      thumbnail: downloadThumbUrl,
-      tripImgUrl: downloadThumbUrl,
-      videoText: 'Test',
-      lat: position.latitude,
-      lng: position.longitude,
-      address: address,
-      city: city,
-      country: country,
-      days: day,
-    );
-    print(params.toJson());
-    Response response = await MyApp.getDio().post(
-        'trip/$tripIdx', data: params.toJson());
-    DefaultResponse defaultResponse = DefaultResponse.fromJson(response.data);
-    await pr.hide();
-    if (defaultResponse != null) {
+      var downloadVideoUrl = await storageReference.child('$createdAt.mp4')
+          .getDownloadURL();
+      var downloadThumbUrl = await storageReference.child('$createdAt.jpg')
+          .getDownloadURL();
+      CameraResultParams params = CameraResultParams(
+        categoryIdx: 1,
+        videoUrl: downloadVideoUrl,
+        thumbnail: downloadThumbUrl,
+        tripImgUrl: downloadThumbUrl,
+        videoText: 'Test',
+        lat: position.latitude,
+        lng: position.longitude,
+        address: address,
+        city: city,
+        country: country,
+        days: day,
+      );
+      //print(params.toJson());
+      Response response = await MyApp.getDio().post(
+          'trip/$tripIdx', data: params.toJson());
+      DefaultResponse defaultResponse = DefaultResponse.fromJson(response.data);
+      await pr.hide();
+      if (defaultResponse == null) {
+        throw Exception();
+      }
       Navigator.pop(context, "Success");
-      return;
-    }
-    setState(() {
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(
-          '여행 저장에 실패했습니다.',
-          style: TextStyle(
-            color: Color.fromRGBO(248, 248, 32, 1),
+    } catch (e) {
+      setState(() {
+        scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text(
+            '여행 저장에 실패했습니다.',
+            style: TextStyle(
+              color: Color.fromRGBO(248, 248, 32, 1),
+            ),
           ),
-        ),
-      ));
-    });
+        ));
+      });
+    }
   }
 }

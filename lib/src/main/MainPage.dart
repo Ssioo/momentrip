@@ -113,65 +113,112 @@ class _MainPageState extends State<MainPage> {
   void tryGetStatus(BuildContext context) async {
     ProgressDialog progressDialog = ProgressDialog(
         context, type: ProgressDialogType.Normal, isDismissible: true);
-    await progressDialog.show();
-    Response response = await MyApp.getDio().get("/tripstatus");
-    MainResponse mainResponse = MainResponse.fromJson(response.data);
-    await progressDialog.hide();
-    if (mainResponse == null || !mainResponse.isSuccess) {
-      return;
-    }
-    switch (mainResponse.code) {
-      case 200:
-        Navigator.pushNamed(context, "/travel",
-            arguments: mainResponse.mainResult.elementAt(0));
-        break;
-      case 201:
-        selectDate(context);
-        break;
+    try {
+      await progressDialog.show();
+      Response response = await MyApp.getDio().get("/tripstatus");
+      MainResponse mainResponse = MainResponse.fromJson(response.data);
+      await progressDialog.hide();
+      if (mainResponse == null || !mainResponse.isSuccess) {
+        throw Exception();
+      }
+      switch (mainResponse.code) {
+        case 200:
+          Navigator.pushNamed(context, "/travel",
+              arguments: mainResponse.mainResult.elementAt(0));
+          break;
+        case 201:
+          selectDate(context);
+          break;
+      }
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "일시적으로 이전 여행 데이터를 불러오지 못했습니다. 다시 시도해주세요.",
+          style: TextStyle(
+              fontFamily: "NotoSansKR",
+              fontWeight: FontWeight.w300,
+              color: Color.fromARGB(255, 248, 248, 2)),
+        ),
+        action: SnackBarAction(
+          label: "닫기",
+          onPressed: () {
+            Scaffold.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ));
     }
   }
 
   void selectDate(BuildContext context) async {
-    List<DateTime> pickedDates = await DateRangePicker.showDatePicker(
-        context: context,
-        initialFirstDate: DateTime.now(),
-        initialLastDate: DateTime.now().add(Duration(days: 3)),
-        firstDate: DateTime(1950),
-        lastDate: DateTime(2100));
-    if (pickedDates != null && pickedDates.length == 2) {
-      DateTime firstDate = DateTime(
-          pickedDates
-              .elementAt(0)
-              .year, pickedDates
-          .elementAt(0)
-          .month, pickedDates
-          .elementAt(0)
-          .day);
-      DateTime lastDate = DateTime(
-          pickedDates
-              .elementAt(0)
-              .year, pickedDates
-          .elementAt(0)
-          .month, pickedDates
-          .elementAt(0)
-          .day, 23, 59
-      );
-      tryPostTravel(
-          context, firstDate.toIso8601String(), lastDate.toIso8601String());
+    try {
+      List<DateTime> pickedDates = await DateRangePicker.showDatePicker(
+          context: context,
+          initialFirstDate: DateTime.now(),
+          initialLastDate: DateTime.now().add(Duration(days: 3)),
+          firstDate: DateTime(1950),
+          lastDate: DateTime(2100));
+      if (pickedDates != null && pickedDates.length == 2) {
+        DateTime firstDate = DateTime(
+            pickedDates.elementAt(0).year, pickedDates.elementAt(0).month, pickedDates.elementAt(0).day);
+        DateTime lastDate = DateTime(
+            pickedDates.elementAt(0).year, pickedDates.elementAt(0).month, pickedDates.elementAt(0).day, 23, 59
+        );
+        tryPostTravel(
+            context, firstDate.toIso8601String(), lastDate.toIso8601String());
+      }
+    } catch (e) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "일시적으로 여행 데이터를 생성하지 못했습니다. 다시 시도해주세요.",
+          style: TextStyle(
+              fontFamily: "NotoSansKR",
+              fontWeight: FontWeight.w300,
+              color: Color.fromARGB(255, 248, 248, 2)),
+        ),
+        action: SnackBarAction(
+          label: "닫기",
+          onPressed: () {
+            Scaffold.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ));
     }
   }
 
-  void tryPostTravel(BuildContext context, String startTime,
-      String endTime) async {
+  void tryPostTravel(BuildContext context, String startTime, String endTime) async {
     ProgressDialog progressDialog = ProgressDialog(
         context, type: ProgressDialogType.Normal, isDismissible: true);
-    await progressDialog.show();
-    Response response = await MyApp.getDio().post(
-        "/trip", data: MainParams(startDate: startTime, endDate: endTime));
-    MainObjectResponse mainObjectResponse = MainObjectResponse.fromJson(
-        response.data);
-    await progressDialog.hide();
-    if (mainObjectResponse == null || !mainObjectResponse.isSuccess) {
+    try {
+      await progressDialog.show();
+      Response response = await MyApp.getDio().post(
+          "/trip", data: MainParams(startDate: startTime, endDate: endTime));
+      MainResponse mainObjectResponse = MainResponse.fromJson(
+          response.data);
+      await progressDialog.hide();
+      if (mainObjectResponse == null || !mainObjectResponse.isSuccess) {
+        throw Exception();
+      }
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "새로운 여행을 생성하였습니다.",
+          style: TextStyle(
+              fontFamily: "NotoSansKR",
+              fontWeight: FontWeight.w300,
+              color: Color.fromARGB(255, 248, 248, 2)),
+        ),
+        action: SnackBarAction(
+          label: "닫기",
+          onPressed: () {
+            Scaffold.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ));
+      Future.delayed(Duration(milliseconds: 500), () {
+        Scaffold.of(context).hideCurrentSnackBar();
+        Navigator.pushNamed(
+            context, "/travel", arguments: mainObjectResponse.mainResult);
+      });
+    } catch (e) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
           "새로운 여행 생성에 실패하였습니다.",
@@ -187,28 +234,7 @@ class _MainPageState extends State<MainPage> {
           },
         ),
       ));
-      return;
     }
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(
-        "새로운 여행을 생성하였습니다.",
-        style: TextStyle(
-            fontFamily: "NotoSansKR",
-            fontWeight: FontWeight.w300,
-            color: Color.fromARGB(255, 248, 248, 2)),
-      ),
-      action: SnackBarAction(
-        label: "닫기",
-        onPressed: () {
-          Scaffold.of(context).hideCurrentSnackBar();
-        },
-      ),
-    ));
-    Future.delayed(Duration(milliseconds: 500), () {
-      Scaffold.of(context).hideCurrentSnackBar();
-      Navigator.pushNamed(
-          context, "/travel", arguments: mainObjectResponse.mainResult);
-    });
 
   }
 }

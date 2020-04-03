@@ -11,35 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aed3cf2b-8af2-4c6c-b67a-c4e295e35da9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/images/icon_add_activate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/icon_add_deactivate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/icon_home_deactivate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/icon_mypage_activate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/icon_mypage_deactivate.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/story/StoryPage.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/travel/widgets/EmptyCircularStoryWidget.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/src/travel/widgets/VideoSliderCard.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/app/proguard-rules.pro" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/key.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/settings/widgets/TitleEditBottomWidget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/momentripkey.jks" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/google-services.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/icon_home_activate.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/icon_home_activate.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/img_travelcard.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/camera/CameraPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/camera/CameraPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/camera_result/CameraResultPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/camera_result/CameraResultPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/main/MainPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/MainPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/MainService.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/interfaces/MainView.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/models/MainResponse.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/models/MainResponse.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page1/BigTravelCard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/BigTravelCard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page1/Page1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/Page1.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page1/models/Page1Response.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page1/models/Page1Response.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page3/MyPageTravelCard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/MyPageTravelCard.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/main/widgets/page3/Page3.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/main/widgets/page3/Page3.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/settings/SettingsPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/settings/SettingsPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/sign_in/SignInPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/sign_in/SignInPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/sign_in/SignInService.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/sign_in/interfaces/SignInView.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/travel/TravelPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/travel/TravelPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/travel/models/TravelResponse.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/travel/models/TravelResponse.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/travel/widgets/CircularStoryWidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/travel/widgets/CircularStoryWidget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,8 +52,11 @@
     </option>
   </component>
   <component name="ProjectId" id="1Z4ojDVaKEDNWyG1xN7uXCZ8IUK" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
@@ -115,6 +103,14 @@
       <option name="presentableId" value="Default" />
       <updated>1584107859062</updated>
     </task>
+    <task id="LOCAL-00001" summary="200327. TravelPage 주요기능 완료. (여전히 많은 오류)">
+      <created>1585239215174</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1585239215175</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -129,6 +125,14 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="200327. TravelPage 주요기능 완료. (여전히 많은 오류)" />
+    <option name="LAST_COMMIT_MESSAGE" value="200327. TravelPage 주요기능 완료. (여전히 많은 오류)" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
